@@ -1,15 +1,15 @@
-# BsidesMCPDemo 🛡️
+# BsidesMCPDemo ðŸ›¡ï¸
 **AI-Powered Pentesting with Claude Desktop + MCP**
 
-> BSides Workshop Demo — Connect Claude Desktop to real security tools using the Model Context Protocol (MCP)
+> BSides Workshop Demo â€” Connect Claude Desktop to real security tools using the Model Context Protocol (MCP)
 
 ---
 
 ## What You'll Build
 
 ```
-Claude Desktop ──► MCP Server (server.py) ──► nmap / nikto / gobuster / testssl / pyintruder
-                                          ◄── Results back in Claude
+Claude Desktop â”€â”€â–º MCP Server (server.py) â”€â”€â–º nmap / nikto / gobuster / testssl / pyintruder
+                                          â—„â”€â”€ Results back in Claude
 ```
 
 Ask Claude naturally:
@@ -40,18 +40,18 @@ Ask Claude naturally:
 
 ```
 BsidesMCPDemo/
-├── server.py                          # MCP server — wires all tools together
-├── nmap_scanner.py                    # nmap wrapper
-├── nikto_scanner.py                   # nikto wrapper
-├── ping_tool.py                       # ping wrapper
-├── header_scanner.py                  # security headers checker (curl-based)
-├── gobuster_scanner.py                # gobuster wrapper (auto-wordlist fallback)
-├── testssl_scanner.py                 # testssl.sh wrapper
-├── pyintruder_tool.py                 # pyintruder_cli wrapper
-├── pyintruder_cli.py                  # PyIntruder CLI engine (fuzzing core)
-├── requirements.txt                   # Python deps (just mcp)
-├── claude_desktop_config_windows.json # Claude Desktop config for Windows/WSL
-└── claude_desktop_config_mac_linux.json # Claude Desktop config for macOS/Linux
+â”œâ”€â”€ server.py                          # MCP server â€” wires all tools together
+â”œâ”€â”€ nmap_scanner.py                    # nmap wrapper
+â”œâ”€â”€ nikto_scanner.py                   # nikto wrapper
+â”œâ”€â”€ ping_tool.py                       # ping wrapper
+â”œâ”€â”€ header_scanner.py                  # security headers checker (curl-based)
+â”œâ”€â”€ gobuster_scanner.py                # gobuster wrapper (auto-wordlist fallback)
+â”œâ”€â”€ testssl_scanner.py                 # testssl.sh wrapper
+â”œâ”€â”€ pyintruder_tool.py                 # pyintruder_cli wrapper
+â”œâ”€â”€ pyintruder_cli.py                  # PyIntruder CLI engine (fuzzing core)
+â”œâ”€â”€ requirements.txt                   # Python deps (just mcp)
+â”œâ”€â”€ claude_desktop_config_windows.json # Claude Desktop config for Windows/WSL
+â””â”€â”€ claude_desktop_config_mac_linux.json # Claude Desktop config for macOS/Linux
 ```
 
 Each tool is one standalone file. Test each one independently before touching MCP.
@@ -86,7 +86,7 @@ git clone https://github.com/hsagnik/pyintruder_cli ~/pyintruder_cli
 pip3 install -r ~/pyintruder_cli/requirements.txt --break-system-packages
 ```
 
-### Wordlists (for gobuster — Linux/WSL)
+### Wordlists (for gobuster â€” Linux/WSL)
 
 ```bash
 sudo apt install -y dirb
@@ -99,14 +99,14 @@ sudo apt install -y dirb
 
 ## Setup
 
-### Step 1 — Clone the repo
+### Step 1 â€” Clone the repo
 
 ```bash
 git clone https://github.com/kannanprabu/BsidesMCPDemo.git
 cd BsidesMCPDemo
 ```
 
-### Step 2 — Install Python dependency
+### Step 2 â€” Install Python dependency
 
 ```bash
 pip3 install mcp
@@ -117,7 +117,7 @@ Verify:
 python3 -c "from mcp.server import Server; print('mcp OK')"
 ```
 
-### Step 3 — Test each tool standalone (no MCP needed)
+### Step 3 â€” Test each tool standalone (no MCP needed)
 
 ```bash
 python3 ping_tool.py scanme.nmap.org
@@ -131,7 +131,7 @@ python3 pyintruder_tool.py "http://testphp.vulnweb.com/userinfo.php?username=\$p
 
 **If a tool fails here, fix it before connecting to Claude Desktop.**
 
-### Step 4 — Test the MCP server
+### Step 4 â€” Test the MCP server
 
 ```bash
 echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}' | python3 server.py
@@ -139,7 +139,7 @@ echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":
 
 Expected: JSON back with `"name":"BsidesMCPDemo"`. No errors = working.
 
-### Step 5 — Configure Claude Desktop
+### Step 5 â€” Configure Claude Desktop
 
 Find the Claude Desktop config file:
 
@@ -148,7 +148,7 @@ Find the Claude Desktop config file:
 | Windows | `C:\Users\USERNAME\AppData\Roaming\Claude\claude_desktop_config.json` |
 | macOS | `~/Library/Application Support/Claude/claude_desktop_config.json` |
 
-**Windows (WSL) — use `claude_desktop_config_windows.json`:**
+**Windows (WSL) â€” use `claude_desktop_config_windows.json`:**
 ```json
 {
   "mcpServers": {
@@ -160,7 +160,7 @@ Find the Claude Desktop config file:
 }
 ```
 
-**macOS / Linux — use `claude_desktop_config_mac_linux.json`:**
+**macOS / Linux â€” use `claude_desktop_config_mac_linux.json`:**
 ```json
 {
   "mcpServers": {
@@ -174,25 +174,25 @@ Find the Claude Desktop config file:
 
 Replace `YOUR_WSL_USERNAME` / `YOUR_USERNAME` with your actual username (`echo $USER` in terminal).
 
-### Step 6 — Restart Claude Desktop
+### Step 6 â€” Restart Claude Desktop
 
-Close fully and reopen. Look for the 🔌 MCP tools indicator in Claude.
+Close fully and reopen. Look for the ðŸ”Œ MCP tools indicator in Claude.
 
 ---
 
 ## How the Code Works
 
-### server.py — The wiring layer
+### server.py â€” The wiring layer
 
-`server.py` is intentionally thin — it just registers tools and routes calls. All logic lives in the individual tool files.
+`server.py` is intentionally thin â€” it just registers tools and routes calls. All logic lives in the individual tool files.
 
 ```
-list_tools()  →  declares 7 tools to Claude
-call_tool()   →  routes each call to the right function
-is_safe()     →  blocks shell injection characters (; && || ` $( | > <)
+list_tools()  â†’  declares 7 tools to Claude
+call_tool()   â†’  routes each call to the right function
+is_safe()     â†’  blocks shell injection characters (; && || ` $( | > <)
 ```
 
-### Tool files — one function each
+### Tool files â€” one function each
 
 Every tool exports a single function:
 
@@ -206,18 +206,18 @@ run_testssl(args: str) -> str
 run_pyintruder(url: str, args: str) -> str
 ```
 
-### gobuster_scanner.py — Wordlist auto-fallback
+### gobuster_scanner.py â€” Wordlist auto-fallback
 
 If no system wordlist is found, gobuster_scanner automatically writes a built-in wordlist to a temp file and uses that. You'll see the source reported in the output:
 ```
 [User: yourname] [Wordlist: /usr/share/dirb/wordlists/common.txt]
 ```
 
-### testssl_scanner.py — Expects ~/testssl
+### testssl_scanner.py â€” Expects ~/testssl
 
 Looks for testssl.sh at `~/testssl/testssl.sh`. If not found, returns a clear install message.
 
-### pyintruder_tool.py — Expects ~/pyintruder_cli
+### pyintruder_tool.py â€” Expects ~/pyintruder_cli
 
 Wraps the `pyintruder_cli.py` engine. Use `$p$` as the injection point in the URL:
 ```
@@ -226,7 +226,7 @@ http://example.com/page?id=$p$
 
 ---
 
-## Workshop Exercise — How to Add a New Tool
+## Workshop Exercise â€” How to Add a New Tool
 
 Adding a tool is 3 steps:
 
@@ -265,7 +265,7 @@ Restart Claude Desktop. Done.
 | `http://demo.testfire.net` | IBM vulnerable banking demo |
 | Your own VMs / lab | Best for deep testing |
 
-> ⚠️ **Only scan systems you own or have explicit written permission to test.**
+> âš ï¸ **Only scan systems you own or have explicit written permission to test.**
 
 ---
 
@@ -303,4 +303,4 @@ Only use these tools on systems you own or have **explicit written permission** 
 
 ---
 
-**Built for BSides by Kannan Prabu Ramamoorthy 🛡️**
+**Built for BSides by Kannan Prabu Ramamoorthy ðŸ›¡ï¸**
