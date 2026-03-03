@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "pentest": {
+      "command": "wsl",
+      "args": [
+        "python3",
+        "/home/YOUR_WSL_USERNAME/BsidesMCPDemo/server.py"
+      ]
+    }
+  }
+}
