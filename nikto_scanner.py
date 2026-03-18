@@ -9,7 +9,9 @@ Standalone test (no MCP needed):
 import subprocess
 import shlex
 
-BINARY  = "/usr/bin/nikto"
+BINARY  = "/opt/homebrew/bin/nikto"
+#Binary for Windows WSL (uncomment if using on Windows)
+#BINARY  = "/usr/bin/nikto"
 TIMEOUT = 300
 
 

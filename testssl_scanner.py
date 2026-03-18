@@ -18,7 +18,7 @@ import pathlib
 
 # Path to testssl.sh — adjust if installed elsewhere
 TESTSSL  = str(pathlib.Path.home() / "testssl" / "testssl.sh")
-TIMEOUT  = 300
+TIMEOUT  = 300 # seconds
 
 
 def run_testssl(args: str) -> str:
@@ -29,9 +29,9 @@ def run_testssl(args: str) -> str:
             "  git clone --depth 1 https://github.com/drwetter/testssl.sh.git ~/testssl\n"
             "  chmod +x ~/testssl/testssl.sh"
         )
-
-    cmd = ["bash", TESTSSL, "--color", "0"] + shlex.split(args)
     try:
+        #cmd = ["bash", TESTSSL, "--color", "0"] + shlex.split(args)
+        cmd = ["bash", TESTSSL, "--color", "0", "--quiet", "--ip", "one", "--socket-timeout", "10", "--openssl-timeout", "10"] + shlex.split(args)
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=TIMEOUT)
         return result.stdout or result.stderr or "(no output)"
     except subprocess.TimeoutExpired:
@@ -44,4 +44,5 @@ if __name__ == "__main__":
     import sys
     target = sys.argv[1] if len(sys.argv) > 1 else "example.com:443"
     # --fast gives a quicker overview scan
-    print(run_testssl(f"--fast {target}"))
+    #print(run_testssl(f"--fast {target}"))
+    print(run_testssl(target))

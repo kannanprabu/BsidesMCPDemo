@@ -10,7 +10,9 @@ Standalone test (no MCP needed):
 import subprocess
 import shlex
 
-BINARY  = "/usr/bin/nmap"
+BINARY  = "/opt/homebrew/bin/nmap"
+#Binary for Windows WSL(uncomment if using on Windows)
+#BINARY  = "/usr/bin/nmap"
 TIMEOUT = 300  # seconds
 
 

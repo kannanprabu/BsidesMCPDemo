@@ -9,7 +9,9 @@ Standalone test (no MCP needed):
 import subprocess
 import shlex
 
-BINARY  = "/usr/bin/ping"
+BINARY  = "/sbin/ping"
+#Binary for Windows WSL (uncomment if using on Windows)
+#BINARY = "/usr/bin/ping"
 TIMEOUT = 30
 
 

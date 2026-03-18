@@ -14,10 +14,13 @@ import os
 import tempfile
 import getpass
 
-BINARY  = "/usr/bin/gobuster"
+BINARY  = "/opt/homebrew/bin/gobuster"
+#Binary for Windows WSL (uncomment if using on Windows)
+#BINARY  = "/usr/bin/gobuster"
 TIMEOUT = 300
 
 WORDLIST_CANDIDATES = [
+    "/Users/kanna/wordlists/common.txt",
     "/usr/share/dirb/wordlists/common.txt",
     "/usr/share/wordlists/dirb/common.txt",
     "/usr/share/wordlists/common.txt",
